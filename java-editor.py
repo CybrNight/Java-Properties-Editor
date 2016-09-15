@@ -84,25 +84,28 @@ class Application(tk.Frame):
 
 
     def create_menu(self):
-        menubar = Menu(root)
+        menu_bar = Menu(root)
 
-        filemenu = Menu(menubar,tearoff=0)
-        filemenu.add_command(label="Open",command=lambda : self.load_file())
-        filemenu.add_command(label="Save",command=lambda : self.save(self))
-        filemenu.add_separator()
-        filemenu.add_command(label="Exit",command=lambda : sys.exit())
-        menubar.add_cascade(label="File",menu=filemenu)
+        file_menu = Menu(menu_bar,tearoff=0)
 
-        root.config(menu=menubar)
+        file_menu.add_command(label="Open",command=lambda : self.load_file())
+        file_menu.add_command(label="Save",command=lambda : self.save(self))
+        file_menu.add_separator()
+        file_menu.add_command(label="Exit",command=lambda : sys.exit())
+
+        about_menu = Menu(menu_bar,tearoff=0)
+        about_menu.add_command(label="Info",command=lambda : self.show_info())
+
+        menu_bar.add_cascade(label="File",menu=file_menu)
+        menu_bar.add_cascade(label="About",menu=about_menu)
+
+        root.config(menu=menu_bar)
 
         root.resizable(width=True,height=True)
 
     def create_list(self):
-        column = 0
-        row = 0
-        print("Hello")
         #Create Listbox
-        list_font = font.Font(size=14)
+        list_font = font.Font(size=18)
         list = Listbox(root,font=list_font)
         list.pack(ipadx=root.winfo_width(),ipady=root.winfo_height())
 
@@ -132,20 +135,20 @@ class Application(tk.Frame):
 
     def edit_value(self,num):
         print(num)
-        win = Tk()
-        win.title(str(self.properties[num]).split("=")[0])
-        win.geometry('{}x{}'.format(300,112))
-        win.resizable(width=False,height=False)
+        edit_win = Tk()
+        edit_win.title(str(self.properties[num]).split("=")[0])
+        edit_win.geometry('{}x{}'.format(300,112))
+        edit_win.resizable(width=False,height=False)
         v = StringVar()
-        e = Entry(win,textvariable=v)
+        e = Entry(edit_win,textvariable=v)
         if (self.property_vals[num] == ""): e.insert(END,"NULL")
         else: e.insert(END,self.property_vals[num])
 
 
-        label = Label(win,text="Enter New Value")
+        label = Label(edit_win,text="Enter New Value")
         label.pack(side="top")
         e.pack(side="top",ipady=5,padx=50)
-        btn = Button(win,text="Save",command=lambda : self.save_value(e.get(),num,win))
+        btn = Button(edit_win,text="Save",command=lambda : self.save_value(e.get(),num,edit_win))
         btn.pack(side="bottom",pady=10)
 
     def save_value(self,val,num,win):
@@ -154,6 +157,23 @@ class Application(tk.Frame):
         self.property_vals[num] = val
         print(self.property_vals[num])
         win.destroy()
+
+
+
+    def show_info(self):
+        print("Info")
+        info_win = Tk()
+        info_win.geometry("{}x{}".format(300,112))
+        info_win.title("Info")
+
+        about_txt = Label(info_win,text="Java Properties Editor")
+        author_txt = Label(info_win,text="Author:Nathan Estrada")
+
+        about_txt.pack(side="top")
+        author_txt.pack(side="top")
+
+        close_btn = Button(info_win,text="Close",command=lambda : info_win.destroy())
+        close_btn.pack(side="bottom",ipady=10,ipadx=15)
 
 
     def onSelect(self, event):
