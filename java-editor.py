@@ -58,7 +58,7 @@ class Application(tk.Frame):
             self.open_button.destroy()
             self.open_label.destroy()
         except OSError:
-            print("Unable to find server.properties file")
+            print("Unable to load .properties file")
             sys.exit()
 
         file = os.fdopen(newos,"r+")
