@@ -59,7 +59,7 @@ class Application(tk.Frame):
             self.open_label.destroy()
         except OSError:
             print("Unable to load .properties file")
-            sys.exit()
+            return;
 
         file = os.fdopen(newos,"r+")
 
